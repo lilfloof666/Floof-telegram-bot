@@ -1,65 +1,77 @@
 import time
-import random
 from datetime import datetime, timedelta
 import telebot
+import random
 
-# 🔒 Dein Bot-Token (vom BotFather)
 BOT_TOKEN = "8327139268:AAHldpid7j19JuxonZ6G5mimJEuLP1ZKzc8"
-
-# 📢 Dein Kanal (oder Chat-ID)
-CHAT_ID = "@lilfloofcreations"   # oder z.B. -1001234567890
+CHAT_ID = "@lilfloofcreations"
 
 bot = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
 
-# 🐱 Cat-Meme-Bilder (ECHTE BILDER → hier deine URLs eintragen)
-CAT_IMAGES = [
-        "https://example.com/cat_meme_1.jpg",
-            "https://example.com/cat_meme_2.jpg",
-                "https://example.com/cat_meme_3.jpg",
-                https://cataas.com/cat
-                    # füge hier so viele hinzu wie du willst
+# 🐱 Meme-Quellen (legal + random + jeden Tag neue)
+CAT_SOURCES = [
+        "https://cataas.com/cat",
+            "https://cataas.com/cat/cute",
+                "https://cataas.com/cat/gif",
+                    "https://cataas.com/cat?type=square",
+                        "https://cataas.com/cat/says/FLOOF",
+                            "https://cataas.com/cat/says/MEOW",
+                                "https://cataas.com/cat/says/CHAOS",
 ]
 
-# ✏️ Optional: kleine Meme-Captions dazu
 CAPTIONS = [
-        "😼 Daily dose of chaos floof.",
-            "🐾 If you’re reading this, pet a cat.",
-                "😹 Life is hard, but cats are soft.",
-                    "🖤 Dark mind, soft kitty.",
+        "🐾 Daily Cat Meme 🖤",
+            "😼 Chaos floof incoming...",
+                "🐱 Your daily emotional support cat.",
+                    "😹 Stay dark, stay fluffy.",
 ]
 
-def seconds_until(hour: int, minute: int) -> int:
-    """Berechne, wie viele Sekunden bis zur nächsten HH:MM sind."""
-        now = datetime.now()
-            target = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
-                if target <= now:
-                        target += timedelta(days=1)
-                            return int((target - now).total_seconds())
+def random_cat_meme():
+    """Sendet ein zufälliges Cat Meme."""
+        image_url = random.choice(CAT_SOURCES)
+            caption = random.choice(CAPTIONS)
+                bot.send_photo(CHAT_ID, image_url, caption=caption)
 
-                            def send_cat_meme():
-                                """Schickt ein zufälliges Cat-Meme-Bild in den Kanal."""
-                                    image_url = random.choice(CAT_IMAGES)
-                                        caption = random.choice(CAPTIONS)
-                                            bot.send_photo(CHAT_ID, image_url, caption=caption)
-                                                print(f"[OK] Cat Meme gesendet um {datetime.now()}")
 
-                                                def main():
-                                                    print("🐱 Daily Cat Meme Bot gestartet...")
+                # 📌 COMMAND HANDLER – Sofort ein Meme senden
+                @bot.message_handler(commands=["cat", "meme"])
+                def send_cat_on_command(message):
+                    random_cat_meme()
+                        bot.reply_to(message, "😺 Here's your meme, Floofi!")
+
+
+                        def seconds_until(hour, minute):
+                            now = datetime.now()
+                                target = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+                                    if target <= now:
+                                            target += timedelta(days=1)
+                                                return int((target - now).total_seconds())
+
+
+                                                def daily_cat_meme_loop():
+                                                    """Täglicher 19-Uhr-Loop"""
                                                         while True:
-                                                                # ⏰ Warte bis 19:00 (Serverzeit!)
-                                                                        wait_seconds = seconds_until(19, 0)
-                                                                                print(f"Warte {wait_seconds} Sekunden bis 19:00...")
-                                                                                        time.sleep(wait_seconds)
+                                                                wait = seconds_until(19, 0)
+                                                                        print(f"⏳ Warte {wait} Sekunden bis 19:00...")
+                                                                                time.sleep(wait)
 
-                                                                                                # 🐈 Meme senden
-                                                                                                        try:
-                                                                                                                    send_cat_meme()
-                                                                                                                            except Exception as e:
-                                                                                                                                        print(f"[FEHLER] Beim Senden: {e}")
+                                                                                        try:
+                                                                                                    random_cat_meme()
+                                                                                                                print("[OK] Daily Cat Meme gesendet!")
+                                                                                                                        except Exception as e:
+                                                                                                                                    print(f"[ERROR] {e}")
 
-                                                                                                                                                # Kleiner Puffer, damit er nicht zweimal abschickt,
-                                                                                                                                                        # falls die Zeitberechnung knapp ist
-                                                                                                                                                                time.sleep(5)
+                                                                                                                                            time.sleep(5)  # bisschen warten damit er nicht doppelt sendet
+
+
+                                                                                                                                            def main():
+                                                                                                                                                # Bot in einem eigenen Thread starten
+                                                                                                                                                    import threading
+                                                                                                                                                        threading.Thread(target=daily_cat_meme_loop, daemon=True).start()
+
+                                                                                                                                                            print("🐱 Cat Meme Bot läuft! /cat = sofort Meme, Daily um 19 Uhr.")
+                                                                                                                                                                bot.infinity_polling()
+
 
                                                                                                                                                                 if __name__ == "__main__":
                                                                                                                                                                     main()
