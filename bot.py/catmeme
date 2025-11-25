@@ -16,6 +16,7 @@ CAT_IMAGES = [
         "https://example.com/cat_meme_1.jpg",
             "https://example.com/cat_meme_2.jpg",
                 "https://example.com/cat_meme_3.jpg",
+                https://cataas.com/cat
                     # füge hier so viele hinzu wie du willst
 ]
 
