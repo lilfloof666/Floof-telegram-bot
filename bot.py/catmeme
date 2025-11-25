@@ -1,0 +1,66 @@
+import time
+import random
+from datetime import datetime, timedelta
+import telebot
+
+# 🔒 Dein Bot-Token (vom BotFather)
+BOT_TOKEN = "8327139268:AAHldpid7j19JuxonZ6G5mimJEuLP1ZKzc8"
+
+# 📢 Dein Kanal (oder Chat-ID)
+CHAT_ID = "@lilfloofcreations"   # oder z.B. -1001234567890
+
+bot = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
+
+# 🐱 Cat-Meme-Bilder (ECHTE BILDER → hier deine URLs eintragen)
+CAT_IMAGES = [
+        "https://example.com/cat_meme_1.jpg",
+            "https://example.com/cat_meme_2.jpg",
+                "https://example.com/cat_meme_3.jpg",
+                    # füge hier so viele hinzu wie du willst
+]
+
+# ✏️ Optional: kleine Meme-Captions dazu
+CAPTIONS = [
+        "😼 Daily dose of chaos floof.",
+            "🐾 If you’re reading this, pet a cat.",
+                "😹 Life is hard, but cats are soft.",
+                    "🖤 Dark mind, soft kitty.",
+]
+
+def seconds_until(hour: int, minute: int) -> int:
+    """Berechne, wie viele Sekunden bis zur nächsten HH:MM sind."""
+        now = datetime.now()
+            target = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+                if target <= now:
+                        target += timedelta(days=1)
+                            return int((target - now).total_seconds())
+
+                            def send_cat_meme():
+                                """Schickt ein zufälliges Cat-Meme-Bild in den Kanal."""
+                                    image_url = random.choice(CAT_IMAGES)
+                                        caption = random.choice(CAPTIONS)
+                                            bot.send_photo(CHAT_ID, image_url, caption=caption)
+                                                print(f"[OK] Cat Meme gesendet um {datetime.now()}")
+
+                                                def main():
+                                                    print("🐱 Daily Cat Meme Bot gestartet...")
+                                                        while True:
+                                                                # ⏰ Warte bis 19:00 (Serverzeit!)
+                                                                        wait_seconds = seconds_until(19, 0)
+                                                                                print(f"Warte {wait_seconds} Sekunden bis 19:00...")
+                                                                                        time.sleep(wait_seconds)
+
+                                                                                                # 🐈 Meme senden
+                                                                                                        try:
+                                                                                                                    send_cat_meme()
+                                                                                                                            except Exception as e:
+                                                                                                                                        print(f"[FEHLER] Beim Senden: {e}")
+
+                                                                                                                                                # Kleiner Puffer, damit er nicht zweimal abschickt,
+                                                                                                                                                        # falls die Zeitberechnung knapp ist
+                                                                                                                                                                time.sleep(5)
+
+                                                                                                                                                                if __name__ == "__main__":
+                                                                                                                                                                    main()
+]
+]
